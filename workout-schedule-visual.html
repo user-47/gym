@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Cut &amp; Build — 5-Day Program with Form Diagrams</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F2F4EE;
+    --paper-2: #E5EAE2;
+    --ink: #132238;
+    --ink-2: #273950;
+    --muted: #627080;
+    --accent: #E2532F;
+    --accent-soft: #F39B55;
+    --blue: #2C5F9E;
+    --ok: #356B50;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      linear-gradient(rgba(44,95,158,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(44,95,158,.035) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .wrap { max-width: 940px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  /* ─── HEADER ─── */
+  header { padding: 24px 0 28px; border-bottom: 1.5px solid var(--ink); }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); display: flex; justify-content: space-between;
+    margin-bottom: 20px; gap: 12px;
+  }
+  .eyebrow span:last-child { color: var(--accent); text-align: right; }
+
+  h1.program-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(56px, 12vw, 104px); font-weight: 700;
+    line-height: 0.82; letter-spacing: -0.045em; text-transform: uppercase;
+  }
+  h1.program-title em { font-style: italic; font-weight: 500; color: var(--accent); }
+
+  .subtitle {
+    font-family: 'DM Sans', sans-serif; font-size: 17px;
+    font-weight: 500; color: var(--muted); margin-top: 18px;
+    max-width: 620px; line-height: 1.5;
+  }
+
+  .header-meta {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px;
+    margin-top: 26px; padding-top: 20px;
+    border-top: 1px dashed rgba(20,24,31,0.25);
+  }
+  .meta-item { font-family: 'JetBrains Mono', monospace; }
+  .meta-item .val { font-size: 21px; font-weight: 700; letter-spacing: -0.02em; }
+  .meta-item .val small { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .meta-item .lbl {
+    font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); margin-top: 2px;
+  }
+
+  /* ─── LEGEND ─── */
+  .legend {
+    margin-top: 26px; padding: 16px 18px;
+    border: 1px solid var(--ink); border-radius: 2px;
+    background: rgba(20,24,31,0.03);
+  }
+  .legend .lg-title {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-bottom: 12px;
+  }
+  .legend-items {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 18px;
+  }
+  .lg-item {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 12.5px; color: var(--ink-2); line-height: 1.35;
+  }
+  .lg-swatch { flex-shrink: 0; width: 24px; height: 14px; }
+
+  /* ─── NAV ─── */
+  nav.day-nav {
+    display: flex; gap: 6px; margin: 26px 0 8px;
+    overflow-x: auto; padding-bottom: 4px; scrollbar-width: none;
+  }
+  nav.day-nav::-webkit-scrollbar { display: none; }
+  nav.day-nav a {
+    flex-shrink: 0; font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink);
+    text-decoration: none; padding: 8px 12px; border: 1px solid var(--ink);
+    border-radius: 2px; transition: background .15s, color .15s;
+  }
+  nav.day-nav a:hover, nav.day-nav a:focus-visible { background: var(--ink); color: var(--paper); }
+
+  /* ─── DAY ─── */
+  .day { margin-top: 44px; scroll-margin-top: 16px; }
+
+  .day-header {
+    display: grid; grid-template-columns: auto 1fr auto;
+    align-items: baseline; gap: 14px;
+    padding-bottom: 12px; border-bottom: 2px solid var(--ink);
+  }
+  .day-num {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    font-weight: 700; letter-spacing: 0.1em; color: var(--accent);
+  }
+  .day-title {
+    font-family: 'Fraunces', serif; font-size: clamp(26px, 6.5vw, 32px);
+    font-weight: 500; line-height: 1; letter-spacing: -0.02em;
+    font-variation-settings: "opsz" 72, "SOFT" 50;
+  }
+  .day-day {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+  }
+  .day-focus {
+    font-family: 'Fraunces', serif; font-style: italic; font-weight: 300;
+    font-size: 15px; color: var(--muted); padding: 12px 0 18px;
+    border-bottom: 1px dashed rgba(20,24,31,0.2); margin-bottom: 18px;
+  }
+
+  .warmup {
+    background: rgba(139,42,36,0.06); border-left: 3px solid var(--accent);
+    padding: 12px 14px; margin-bottom: 22px; font-size: 13.5px; line-height: 1.5;
+  }
+  .warmup .tag {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); font-weight: 700; margin-right: 8px;
+  }
+
+  /* ─── EXERCISE ─── */
+  .exercise {
+    display: grid; grid-template-columns: 104px 1fr; gap: 16px;
+    padding: 20px 0; border-bottom: 1px solid rgba(20,24,31,0.12);
+    align-items: start;
+  }
+  .exercise:last-child { border-bottom: none; }
+
+  .ex-fig { display: block; }
+  .ex-num {
+    display: block; font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.14em;
+    color: var(--accent); margin-bottom: 5px;
+  }
+  .fig {
+    width: 100%; height: auto; display: block;
+    background: var(--paper-2); border: 1px solid rgba(20,24,31,0.2);
+    border-radius: 2px;
+  }
+
+  /* SVG figure styling */
+  .fig .b  { stroke: var(--ink); stroke-width: 3.4; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+  .fig .h  { fill: var(--ink); }
+  .fig .g  { stroke: rgba(20,24,31,0.24); stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+  .fig .gh { fill: rgba(20,24,31,0.24); }
+  .fig .eq { stroke: var(--accent); stroke-width: 4; stroke-linecap: round; fill: none; }
+  .fig .eqf{ fill: var(--accent); }
+  .fig .eqg{ stroke: rgba(139,42,36,0.3); stroke-width: 4; stroke-linecap: round; fill: none; }
+  .fig .eqgf{ fill: rgba(139,42,36,0.3); }
+  .fig .ar { stroke: var(--accent-soft); stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .fig .gr { stroke: rgba(20,24,31,0.35); stroke-width: 1.6; stroke-dasharray: 4 4; }
+  .fig .bn { fill: rgba(20,24,31,0.16); }
+
+  .ex-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+  .ex-name {
+    font-family: 'Fraunces', serif; font-size: 19px; font-weight: 500;
+    letter-spacing: -0.01em; line-height: 1.15;
+  }
+  .ex-name .alt {
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    color: var(--muted); font-weight: 400; letter-spacing: 0.04em;
+  }
+  .sets-reps {
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+    color: var(--accent); font-size: 21px; letter-spacing: -0.02em;
+    white-space: nowrap; line-height: 1;
+  }
+  .sets-reps .mult { font-size: 12px; color: var(--muted); margin: 0 3px; font-weight: 400; vertical-align: 2px; }
+
+  .ex-meta {
+    display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+    letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted);
+  }
+  .ex-meta strong { color: var(--ink-2); font-weight: 700; margin-right: 4px; }
+
+  .ex-cues {
+    margin-top: 10px; font-size: 13.5px; color: var(--ink-2);
+    line-height: 1.55; padding-left: 13px; border-left: 1.5px solid var(--accent-soft);
+  }
+  .ex-cues li { list-style: none; margin-bottom: 2px; }
+  .ex-cues li::before {
+    content: "→ "; color: var(--accent-soft);
+    font-family: 'JetBrains Mono', monospace; font-weight: 700;
+  }
+
+  /* ─── WEEKEND ─── */
+  .weekend {
+    margin-top: 48px; padding: 22px; background: var(--paper-2);
+    border: 1px solid var(--ink); border-radius: 2px;
+  }
+  .weekend .tag {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--ok); font-weight: 700; margin-bottom: 8px;
+  }
+  .weekend h3 {
+    font-family: 'Fraunces', serif; font-size: 24px; font-weight: 500;
+    letter-spacing: -0.02em; margin-bottom: 8px;
+  }
+  .weekend p { font-size: 14px; color: var(--ink-2); line-height: 1.55; }
+
+  /* ─── NOTES ─── */
+  .notes { margin-top: 48px; padding-top: 28px; border-top: 2px solid var(--ink); }
+  .notes .eyebrow { margin-bottom: 16px; }
+  .notes h2 {
+    font-family: 'Fraunces', serif; font-size: clamp(28px, 7vw, 34px);
+    font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; line-height: 1;
+  }
+  .note { padding: 14px 0; border-bottom: 1px dashed rgba(20,24,31,0.2); }
+  .note:last-child { border-bottom: none; }
+  .note h4 {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px;
+  }
+  .note p { font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+
+  .glossary {
+    margin-top: 30px; padding: 18px; background: rgba(20,24,31,0.05);
+    font-family: 'JetBrains Mono', monospace; font-size: 12px;
+    line-height: 1.7; color: var(--ink-2);
+  }
+  .glossary strong { color: var(--accent); font-weight: 700; }
+
+  /* ─── FOOD ─── */
+  .food-intro { font-size: 14px; color: var(--ink-2); line-height: 1.6; margin-bottom: 8px; }
+  .food-intro strong { color: var(--accent); }
+  .food-block { margin-top: 30px; }
+  .food-block h3 {
+    font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500;
+    letter-spacing: -0.02em; margin-bottom: 2px; line-height: 1.1;
+  }
+  .food-block .sub {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 10px;
+  }
+  .swap {
+    display: grid; grid-template-columns: 1fr 20px 1fr; gap: 10px; align-items: center;
+    padding: 11px 0; border-bottom: 1px solid rgba(20,24,31,0.12); font-size: 13.5px;
+  }
+  .swap:last-child { border-bottom: none; }
+  .swap .from { color: var(--muted); text-decoration: line-through; text-decoration-color: rgba(139,42,36,0.4); }
+  .swap .to { color: var(--ink); font-weight: 500; }
+  .swap .arrow { color: var(--accent-soft); font-family: 'JetBrains Mono', monospace; text-align: center; font-weight: 700; }
+  .meal-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  .meal {
+    padding: 14px; border: 1px solid rgba(20,24,31,0.18); border-radius: 2px;
+    background: var(--paper-2);
+  }
+  .meal.star { border-color: var(--accent); border-width: 1.5px; }
+  .meal .mmeta {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 6px; font-weight: 700;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .meal .mname { font-family: 'Fraunces', serif; font-size: 17px; font-weight: 500; margin-bottom: 5px; line-height: 1.15; }
+  .meal .mdesc { font-size: 12.5px; color: var(--ink-2); line-height: 1.45; }
+
+  /* ─── TRACKER ─── */
+  .tracker-top { display: grid; grid-template-columns: repeat(auto-fit, minmax(96px, 1fr)); gap: 10px; margin-bottom: 22px; }
+  .tstat { padding: 13px; border: 1px solid var(--ink); border-radius: 2px; background: rgba(20,24,31,0.03); }
+  .tstat .v { font-family: 'JetBrains Mono', monospace; font-size: 21px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); line-height: 1; }
+  .tstat .v small { font-size: 12px; color: var(--muted); font-weight: 400; }
+  .tstat .k { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 6px; }
+  .tstat.hl { background: rgba(139,42,36,0.06); border-color: var(--accent); }
+  .tstat.hl .v { color: var(--accent); }
+  .chart-wrap { border: 1px solid var(--ink); border-radius: 2px; padding: 14px 10px 8px; background: var(--paper-2); }
+  #chart { width: 100%; height: auto; display: block; }
+  .chart-legend {
+    display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin: 12px 0 4px;
+    font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .chart-legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .chart-legend i { width: 18px; height: 0; border-top-width: 3px; display: inline-block; }
+  .rate-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 20px 0 4px; }
+  .rate-row .lbl { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+  .chip {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 7px 12px;
+    border: 1px solid var(--ink); border-radius: 2px; background: transparent; cursor: pointer; color: var(--ink);
+  }
+  .chip.active { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+  .num-input {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; padding: 7px 9px;
+    border: 1px solid var(--ink); border-radius: 2px; background: var(--paper); color: var(--ink); width: 80px;
+  }
+  .logger {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)) auto; gap: 8px; align-items: end;
+    margin: 18px 0 12px; padding: 16px; border: 1px dashed rgba(20,24,31,0.35); border-radius: 2px;
+  }
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label { font-family: 'JetBrains Mono', monospace; font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .field input {
+    font-family: 'JetBrains Mono', monospace; font-size: 14px; padding: 8px 10px;
+    border: 1px solid var(--ink); border-radius: 2px; background: var(--paper); color: var(--ink); width: 100%;
+  }
+  .btn {
+    font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; padding: 10px 18px; border: 1px solid var(--accent);
+    background: var(--accent); color: var(--paper); border-radius: 2px; cursor: pointer; white-space: nowrap;
+  }
+  .btn:hover { background: #71211c; }
+  .log-row {
+    display: grid; grid-template-columns: 64px 1fr 1fr auto; gap: 10px; align-items: center;
+    padding: 10px 0; border-bottom: 1px solid rgba(20,24,31,0.12);
+    font-family: 'JetBrains Mono', monospace; font-size: 12.5px; color: var(--ink-2);
+  }
+  .log-row .wk { color: var(--accent); font-weight: 700; }
+  .log-row .del { cursor: pointer; color: var(--muted); border: none; background: none; font-size: 17px; line-height: 1; padding: 2px 6px; }
+  .log-row .del:hover { color: var(--accent); }
+  .log-empty { font-size: 14px; color: var(--muted); font-style: italic; font-family: 'Fraunces', serif; padding: 10px 0; }
+
+  footer {
+    margin-top: 56px; text-align: center; font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+
+  /* 2026 refresh: training-log typography, clearer form cards, faster scanning */
+  :where(.meta-item, .legend, .day-nav, .day-num, .day-day, .ex-num, .sets-reps,
+    .ex-meta, .food-block .sub, .meal .mmeta, .tracker-top, .chart-legend,
+    .rate-row, .field, .btn, .log-row, .glossary, footer) {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .day-title, .ex-name, .weekend h3, .notes h2, .food-block h3, .meal .mname {
+    font-family: 'Barlow Condensed', sans-serif;
+  }
+  .day-title { font-size: clamp(32px, 6vw, 46px); font-weight: 600; text-transform: uppercase; }
+  .ex-name { font-size: 25px; font-weight: 600; }
+  .section-kicker { font: 600 10px/1.2 'IBM Plex Mono', monospace; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); }
+
+  .quick-start {
+    display: grid; grid-template-columns: 1.2fr repeat(5, minmax(86px, 1fr));
+    margin: 24px 0 8px; border: 1px solid var(--ink); background: rgba(242,244,238,.9);
+    box-shadow: 6px 6px 0 var(--ink);
+  }
+  .quick-lead, .quick-day { padding: 14px; min-height: 92px; }
+  .quick-lead { background: var(--ink); color: var(--paper); }
+  .quick-lead strong { display: block; font: 600 25px/.95 'Barlow Condensed', sans-serif; text-transform: uppercase; margin-top: 8px; }
+  .quick-day { border-left: 1px solid rgba(19,34,56,.25); text-decoration: none; color: var(--ink); transition: background .15s, color .15s; }
+  .quick-day:hover, .quick-day:focus-visible { background: var(--blue); color: white; outline: 0; }
+  .quick-day b { display: block; font: 600 11px/1 'IBM Plex Mono', monospace; color: var(--accent); margin-bottom: 10px; }
+  .quick-day span { display: block; font: 600 19px/1 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+
+  nav.day-nav {
+    position: sticky; top: 0; z-index: 20; margin: 24px -10px 8px; padding: 10px;
+    background: rgba(242,244,238,.94); border-bottom: 1px solid rgba(19,34,56,.18);
+    backdrop-filter: blur(12px);
+  }
+  nav.day-nav a { border-color: rgba(19,34,56,.5); background: var(--paper); }
+  nav.day-nav a[href="#women"] { border-color: var(--blue); color: var(--blue); }
+  nav.day-nav a[href="#food"] { border-color: var(--accent); color: var(--accent); }
+
+  .exercise {
+    grid-template-columns: 176px 1fr; gap: 24px; padding: 24px 0;
+    border-bottom: 1px solid rgba(19,34,56,.16);
+  }
+  .ex-fig { position: relative; cursor: zoom-in; }
+  .ex-fig::after {
+    content: "START  →  FINISH"; display: block; margin-top: 6px;
+    font: 600 9px/1.3 'IBM Plex Mono', monospace; letter-spacing: .1em;
+    color: var(--muted); text-align: center;
+  }
+  .fig { background: #E9EEE8; border-color: rgba(19,34,56,.25); box-shadow: 3px 3px 0 rgba(19,34,56,.12); }
+  .fig:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .ex-cues { font-size: 14px; max-width: 58ch; }
+  .ex-cues li { margin-bottom: 5px; }
+
+  .track-note { margin: 18px 0 0; padding: 15px 17px; border: 1px solid var(--blue); background: rgba(44,95,158,.07); font-size: 14px; }
+  .women-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 18px; }
+  .focus-card { padding: 18px; border: 1px solid rgba(19,34,56,.22); background: var(--paper-2); }
+  .focus-card .day-code { font: 600 10px/1 'IBM Plex Mono', monospace; letter-spacing: .13em; color: var(--blue); text-transform: uppercase; }
+  .focus-card h3 { font: 600 25px/1 'Barlow Condensed', sans-serif; text-transform: uppercase; margin: 8px 0; }
+  .focus-card p { font-size: 13px; color: var(--ink-2); }
+  .focus-card strong { color: var(--accent); }
+
+  .repeat-plan { margin-top: 26px; border: 2px solid var(--ink); background: var(--paper-2); box-shadow: 7px 7px 0 var(--accent); }
+  .repeat-head { display: flex; justify-content: space-between; gap: 20px; align-items: end; padding: 20px; background: var(--ink); color: var(--paper); }
+  .repeat-head h3 { font: 600 clamp(29px,5vw,42px)/.95 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+  .repeat-head p { max-width: 42ch; font-size: 12px; color: #DDE4E9; }
+  .routine { display: grid; grid-template-columns: 90px 1fr auto; gap: 14px; align-items: center; padding: 17px 20px; border-bottom: 1px solid rgba(19,34,56,.18); }
+  .routine:last-child { border-bottom: 0; }
+  .routine-time { font: 600 10px/1.2 'IBM Plex Mono', monospace; color: var(--accent); text-transform: uppercase; }
+  .routine h4 { font: 600 22px/1 'Barlow Condensed', sans-serif; text-transform: uppercase; margin-bottom: 4px; }
+  .routine p { font-size: 13px; color: var(--muted); }
+  .routine-protein { font: 600 11px/1.2 'IBM Plex Mono', monospace; white-space: nowrap; color: var(--blue); }
+  .prep-strip { padding: 16px 20px; background: rgba(44,95,158,.08); font-size: 13px; }
+  .prep-strip strong { color: var(--blue); }
+
+  dialog.form-dialog { width: min(620px, calc(100% - 32px)); border: 0; padding: 0; background: var(--paper); color: var(--ink); box-shadow: 0 24px 80px rgba(10,20,35,.4); }
+  dialog.form-dialog::backdrop { background: rgba(10,20,35,.78); backdrop-filter: blur(4px); }
+  .dialog-bar { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--ink); color: white; }
+  .dialog-bar strong { font: 600 23px/1 'Barlow Condensed', sans-serif; text-transform: uppercase; }
+  .dialog-close { border: 1px solid rgba(255,255,255,.6); background: transparent; color: white; font: 600 12px 'IBM Plex Mono', monospace; padding: 7px 10px; cursor: pointer; }
+  .dialog-figure { padding: 22px; }
+  .dialog-figure svg { width: 100%; max-height: 62vh; display: block; background: var(--paper-2); }
+  .dialog-tip { padding: 0 22px 22px; color: var(--muted); font-size: 13px; }
+
+  .skip-link { position: fixed; left: 12px; top: -80px; z-index: 99; background: var(--ink); color: white; padding: 10px 14px; }
+  .skip-link:focus { top: 12px; }
+
+  @media (max-width: 760px) {
+    .quick-start { grid-template-columns: 1fr 1fr; }
+    .quick-lead { grid-column: 1 / -1; }
+    .quick-day { border-top: 1px solid rgba(19,34,56,.25); }
+    .quick-day:nth-child(even) { border-left: 0; }
+    .exercise { grid-template-columns: 132px 1fr; gap: 16px; }
+    .women-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (max-width: 520px) {
+    .header-meta { grid-template-columns: 1fr 1fr; }
+    .meta-item:last-child { grid-column: 1 / -1; }
+    .day-header { grid-template-columns: auto 1fr; }
+    .day-day { grid-column: 2; text-align: right; }
+    .day-title { grid-column: 1 / -1; margin-top: 6px; }
+    .wrap { padding-inline: 16px; }
+    .exercise { grid-template-columns: 1fr; gap: 12px; }
+    .ex-fig { max-width: 240px; }
+    .ex-fig::after { text-align: left; }
+    .ex-name { font-size: 17px; }
+    .sets-reps { font-size: 19px; }
+    .routine { grid-template-columns: 68px 1fr; }
+    .routine-protein { grid-column: 2; }
+    .repeat-head { display: block; }
+    .repeat-head p { margin-top: 10px; }
+  }
+
+  @media print {
+    nav.day-nav, .skip-link { display: none; }
+    body { background: white; }
+    .wrap { max-width: none; padding: 0; }
+    .exercise { break-inside: avoid; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#d1">Skip to the program</a>
+<div class="wrap" id="top">
+
+  <!-- ══════ HEADER ══════ -->
+  <header>
+    <div class="eyebrow">
+      <span>Personal Program</span>
+      <span>V 04 · 16-Week Run</span>
+    </div>
+    <h1 class="program-title">The Cut<br>&amp; <em>Build</em></h1>
+    <p class="subtitle">A five-day strength plan, a repeatable everyday menu, and one place to track the work. Choose the standard or women-focused emphasis and run it consistently.</p>
+
+    <div class="header-meta">
+      <div class="meta-item"><div class="val">16<small>wks</small></div><div class="lbl">Length</div></div>
+      <div class="meta-item"><div class="val">5<small>/wk</small></div><div class="lbl">Sessions</div></div>
+      <div class="meta-item"><div class="val">45–60<small>min</small></div><div class="lbl">Per Session</div></div>
+    </div>
+  </header>
+
+  <section class="quick-start" aria-label="Training week at a glance">
+    <div class="quick-lead"><span class="section-kicker">Your week</span><strong>Five sessions.<br>One clear job each day.</strong></div>
+    <a class="quick-day" href="#d1"><b>MON · 01</b><span>Upper<br>strength</span></a>
+    <a class="quick-day" href="#d2"><b>TUE · 02</b><span>Lower<br>strength</span></a>
+    <a class="quick-day" href="#d3"><b>WED · 03</b><span>Push<br>volume</span></a>
+    <a class="quick-day" href="#d4"><b>THU · 04</b><span>Pull<br>volume</span></a>
+    <a class="quick-day" href="#d5"><b>FRI · 05</b><span>Legs<br>+ core</span></a>
+  </section>
+
+  <!-- ══════ LEGEND ══════ -->
+  <div class="legend">
+    <div class="lg-title">How to read the diagrams</div>
+    <div class="legend-items">
+      <div class="lg-item">
+        <svg class="lg-swatch" viewBox="0 0 24 14" aria-hidden="true"><line x1="2" y1="7" x2="22" y2="7" stroke="rgba(20,24,31,0.24)" stroke-width="3.2" stroke-linecap="round"/></svg>
+        <span>Faded figure — <strong>start</strong> position</span>
+      </div>
+      <div class="lg-item">
+        <svg class="lg-swatch" viewBox="0 0 24 14" aria-hidden="true"><line x1="2" y1="7" x2="22" y2="7" stroke="#14181F" stroke-width="3.4" stroke-linecap="round"/></svg>
+        <span>Solid figure — <strong>working</strong> position</span>
+      </div>
+      <div class="lg-item">
+        <svg class="lg-swatch" viewBox="0 0 24 14" aria-hidden="true"><line x1="2" y1="7" x2="22" y2="7" stroke="#8B2A24" stroke-width="4" stroke-linecap="round"/></svg>
+        <span>Red — the bar, dumbbell, or cable</span>
+      </div>
+      <div class="lg-item">
+        <svg class="lg-swatch" viewBox="0 0 24 14" aria-hidden="true"><path d="M3 7 H19 M15 3 L19 7 L15 11" stroke="#C97A5D" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Arrow — direction of the lift</span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="day-nav">
+    <a href="#d1">01 · Upper</a>
+    <a href="#d2">02 · Lower</a>
+    <a href="#d3">03 · Push</a>
+    <a href="#d4">04 · Pull</a>
+    <a href="#d5">05 · Legs</a>
+    <a href="#women">Women’s track</a>
+    <a href="#weekend">Sat/Sun</a>
+    <a href="#food">Food</a>
+    <a href="#track">Tracker</a>
+    <a href="#notes">Notes</a>
+  </nav>
+
+  <!-- ══════════════ DAY 1 — UPPER ══════════════ -->
+  <section class="day" id="d1">
+    <div class="day-header">
+      <span class="day-num">DAY 01</span>
+      <h2 class="day-title">Upper — Strength</h2>
+      <span class="day-day">Mon</span>
+    </div>
+    <p class="day-focus">Heavy compound lifts. Move real weight for lower reps. This is the day you build the shirt-filling muscle: chest, back, shoulders.</p>
+    <div class="warmup"><span class="tag">Warm-Up</span>5 min row or bike · arm circles · band pull-aparts 2×15 · empty bar pressing 2×10</div>
+
+    <!-- 1 Bench Press -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Side view of a barbell bench press: bar lowered to chest then pressed straight up.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="20" y="70" width="76" height="6" rx="2"/>
+          <line class="b" x1="28" y1="76" x2="28" y2="112"/>
+          <line class="b" x1="88" y1="76" x2="88" y2="112"/>
+          <circle class="h" cx="28" cy="62" r="6.5"/>
+          <path class="b" d="M35 67 H70"/>
+          <path class="b" d="M70 67 L90 58 L95 110"/>
+          <path class="g" d="M44 66 L57 71 L44 58"/>
+          <line class="eqg" x1="44" y1="50" x2="44" y2="66"/>
+          <path class="b" d="M44 66 L44 54 L44 42"/>
+          <line class="eq" x1="44" y1="33" x2="44" y2="49"/>
+          <path class="ar" d="M64 60 L64 44 M60 48 L64 44 L68 48"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Barbell Bench Press</div><div class="sets-reps">4<span class="mult">×</span>6</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>2–3 min</span><span><strong>RPE</strong>7–8</span><span><strong>TEMPO</strong>2·0·1</span></div>
+        <ul class="ex-cues">
+          <li>Feet planted, shoulder blades pinched down and back</li>
+          <li>Bar to lower chest, elbows ~60° from body — not flared</li>
+          <li>Same weight all 4 sets; add 2.5 kg next week once all reps are clean</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 2 Bent-Over Row -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Side view of a bent-over barbell row: torso hinged forward, bar pulled from arms-extended to the lower ribs.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="h" cx="27" cy="45" r="6.5"/>
+          <path class="b" d="M34 49 L66 66"/>
+          <path class="b" d="M66 66 L72 88 L66 112"/>
+          <path class="g" d="M40 53 L43 73 L44 92"/>
+          <line class="eqg" x1="44" y1="84" x2="44" y2="100"/>
+          <path class="b" d="M40 53 L33 71 L48 70"/>
+          <line class="eq" x1="48" y1="62" x2="48" y2="78"/>
+          <path class="ar" d="M84 94 L84 74 M80 78 L84 74 L88 78"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Barbell Bent-Over Row</div><div class="sets-reps">4<span class="mult">×</span>8</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>2 min</span><span><strong>RPE</strong>7</span></div>
+        <ul class="ex-cues">
+          <li>Torso around 45°, back flat, brace hard before each pull</li>
+          <li>Pull the bar to your lower ribs, driving elbows behind you</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 3 Overhead Press -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Front view of a standing overhead press: bar starts at shoulder height and finishes locked out overhead.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="h" cx="60" cy="34" r="7"/>
+          <path class="b" d="M60 41 V66"/>
+          <path class="b" d="M60 66 L50 88 L48 110"/>
+          <path class="b" d="M60 66 L70 88 L72 110"/>
+          <path class="g" d="M50 46 L40 56 L48 44"/>
+          <path class="g" d="M70 46 L80 56 L72 44"/>
+          <line class="eqg" x1="34" y1="44" x2="86" y2="44"/>
+          <path class="b" d="M50 46 L44 34 L48 22"/>
+          <path class="b" d="M70 46 L76 34 L72 22"/>
+          <line class="eq" x1="34" y1="22" x2="86" y2="22"/>
+          <circle class="eqf" cx="32" cy="22" r="5"/>
+          <circle class="eqf" cx="88" cy="22" r="5"/>
+          <path class="ar" d="M100 48 L100 28 M96 32 L100 28 L104 32"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Standing Overhead Press</div><div class="sets-reps">3<span class="mult">×</span>8</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>RPE</strong>7–8</span></div>
+        <ul class="ex-cues">
+          <li>Glutes and abs braced — no leg drive</li>
+          <li>Bar path straight up; finish with biceps by your ears</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 4 Pull-Ups -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Pull-up: figure hangs from a bar with straight arms, then pulls up until the chin clears the bar.">
+          <line class="eq" x1="20" y1="16" x2="100" y2="16"/>
+          <circle class="gh" cx="60" cy="26" r="6.5"/>
+          <path class="g" d="M46 20 L50 26 L54 34"/>
+          <path class="g" d="M74 20 L70 26 L66 34"/>
+          <circle class="h" cx="60" cy="46" r="7"/>
+          <path class="b" d="M44 18 L47 36 L53 56"/>
+          <path class="b" d="M76 18 L73 36 L67 56"/>
+          <path class="b" d="M60 53 V80"/>
+          <path class="b" d="M60 80 L51 98 L55 112"/>
+          <path class="b" d="M60 80 L69 98 L65 112"/>
+          <path class="ar" d="M98 60 L98 36 M94 40 L98 36 L102 40"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Pull-Ups <span class="alt">(or lat pulldown)</span></div><div class="sets-reps">3<span class="mult">×</span>AMRAP</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>TARGET</strong>6–12 reps</span></div>
+        <ul class="ex-cues">
+          <li>Full hang at the bottom, chin clears the bar at the top</li>
+          <li>Band assist under 5 clean reps; add weight past 12</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 5 Face Pulls -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Face pull: rope from a high cable pulled toward the face with elbows high.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="8" y="18" width="14" height="72" rx="2"/>
+          <circle class="eqf" cx="22" cy="24" r="3.5"/>
+          <path class="eqg" d="M22 24 L54 42"/>
+          <path class="g" d="M56 54 L48 46 L54 42"/>
+          <path class="g" d="M76 54 L84 46 L76 42"/>
+          <circle class="h" cx="66" cy="44" r="7"/>
+          <path class="b" d="M66 51 V76"/>
+          <path class="b" d="M66 76 L58 94 L56 112"/>
+          <path class="b" d="M66 76 L76 94 L78 112"/>
+          <path class="b" d="M57 56 L46 40 L56 38"/>
+          <path class="b" d="M77 56 L88 40 L78 38"/>
+          <path class="eq" d="M22 24 L56 38"/>
+          <path class="eq" d="M56 38 H78"/>
+          <path class="ar" d="M96 60 L96 42 M92 46 L96 42 L100 46"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Face Pulls</div><div class="sets-reps">3<span class="mult">×</span>15</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>60 s</span><span><strong>RPE</strong>6</span></div>
+        <ul class="ex-cues">
+          <li>High pulley, rope attachment. Pull to eyebrow level with elbows high</li>
+          <li>Shoulder-health insurance — don't skip it</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 6 Plank -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Forearm plank: body forms one straight line from shoulders through hips to ankles.">
+          <line class="gr" x1="8" y1="110" x2="112" y2="110"/>
+          <circle class="h" cx="31" cy="78" r="6.5"/>
+          <path class="b" d="M22 110 H44"/>
+          <path class="b" d="M44 110 L44 86"/>
+          <path class="b" d="M44 86 L72 96 L100 106"/>
+          <path class="b" d="M100 106 L106 110"/>
+          <path class="ar" d="M44 78 L104 100" stroke-dasharray="5 4"/>
+          <text x="60" y="72" font-family="JetBrains Mono, monospace" font-size="9" fill="#C97A5D" letter-spacing="1">STRAIGHT</text>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Plank</div><div class="sets-reps">3<span class="mult">×</span>45s</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>45 s</span></div>
+        <ul class="ex-cues">
+          <li>Ribs down, glutes squeezed, straight line from ear to heel</li>
+          <li>No sagging hips and no piking up — hold the line</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ DAY 2 — LOWER ══════════════ -->
+  <section class="day" id="d2">
+    <div class="day-header">
+      <span class="day-num">DAY 02</span>
+      <h2 class="day-title">Lower — Strength</h2>
+      <span class="day-day">Tue</span>
+    </div>
+    <p class="day-focus">Legs move more muscle and burn more calories than any other session. Your biggest single lever for both fat loss and hormonal drive.</p>
+    <div class="warmup"><span class="tag">Warm-Up</span>5 min bike · hip circles · bodyweight squats 2×10 · glute bridges 2×15 · empty bar squats 2×8</div>
+
+    <!-- 7 Back Squat -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Back squat: bar racked across the upper back, figure descends from standing to hips below knees.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="gh" cx="60" cy="18" r="6.5"/>
+          <path class="g" d="M60 25 V56"/>
+          <path class="g" d="M60 56 L52 82 L50 110"/>
+          <path class="g" d="M60 56 L68 82 L70 110"/>
+          <line class="eqg" x1="36" y1="30" x2="84" y2="30"/>
+          <circle class="h" cx="60" cy="36" r="7"/>
+          <path class="b" d="M60 43 V68"/>
+          <path class="b" d="M60 68 L42 84 L48 110"/>
+          <path class="b" d="M60 68 L78 84 L72 110"/>
+          <path class="b" d="M50 48 L40 54"/>
+          <path class="b" d="M70 48 L80 54"/>
+          <line class="eq" x1="32" y1="48" x2="88" y2="48"/>
+          <circle class="eqf" cx="30" cy="48" r="5"/>
+          <circle class="eqf" cx="90" cy="48" r="5"/>
+          <path class="ar" d="M104 34 L104 56 M100 52 L104 56 L108 52"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Barbell Back Squat</div><div class="sets-reps">4<span class="mult">×</span>6</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>3 min</span><span><strong>RPE</strong>7–8</span><span><strong>TEMPO</strong>3·0·1</span></div>
+        <ul class="ex-cues">
+          <li>Brace like someone's about to punch you; break at hips and knees together</li>
+          <li>Depth: hip crease below the top of the knee</li>
+          <li>Add 2.5–5 kg per week while bar speed stays fast</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 8 RDL -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Romanian deadlift: hips push back and torso hinges forward with a slight knee bend, bar tracking the legs.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="gh" cx="46" cy="22" r="6.5"/>
+          <path class="g" d="M46 29 V62"/>
+          <path class="g" d="M46 62 L49 86 L46 112"/>
+          <path class="g" d="M48 34 L50 50 L50 66"/>
+          <line class="eqg" x1="50" y1="58" x2="50" y2="74"/>
+          <circle class="h" cx="28" cy="46" r="6.5"/>
+          <path class="b" d="M35 50 L60 65"/>
+          <path class="b" d="M60 65 L65 87 L60 112"/>
+          <path class="b" d="M42 54 L45 70 L47 86"/>
+          <line class="eq" x1="47" y1="78" x2="47" y2="94"/>
+          <path class="ar" d="M74 58 Q88 62 86 78 M82 74 L86 79 L90 74"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Romanian Deadlift</div><div class="sets-reps">3<span class="mult">×</span>8</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>2 min</span><span><strong>RPE</strong>7</span></div>
+        <ul class="ex-cues">
+          <li>Slight knee bend, push the hips back until you feel a deep hamstring stretch</li>
+          <li>Bar stays close to the legs — think shaving the shins</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 9 Walking Lunges -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Walking lunge with dumbbells: long step forward, back knee lowered toward the floor.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="h" cx="52" cy="24" r="7"/>
+          <path class="b" d="M52 31 V62"/>
+          <path class="b" d="M52 62 L76 84 L76 112"/>
+          <path class="b" d="M52 62 L36 92 L26 106"/>
+          <path class="b" d="M52 38 L44 56 L44 70"/>
+          <g class="eqf"><circle cx="39" cy="72" r="3.5"/><circle cx="49" cy="72" r="3.5"/><rect x="39" y="70.2" width="10" height="3.6"/></g>
+          <path class="b" d="M52 38 L60 56 L60 70"/>
+          <g class="eqf"><circle cx="55" cy="72" r="3.5"/><circle cx="65" cy="72" r="3.5"/><rect x="55" y="70.2" width="10" height="3.6"/></g>
+          <path class="ar" d="M96 60 L96 84 M92 80 L96 84 L100 80"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Walking Lunges <span class="alt">(DB)</span></div><div class="sets-reps">3<span class="mult">×</span>12<span class="mult">/leg</span></div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>RPE</strong>7</span></div>
+        <ul class="ex-cues">
+          <li>Long step, back knee kisses the floor, drive through the front heel</li>
+          <li>Torso upright — resist leaning over the front thigh</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 10 Leg Curl -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Lying leg curl: face down on a pad, heels curled from straight legs toward the glutes.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="18" y="66" width="60" height="6" rx="2"/>
+          <line class="b" x1="26" y1="72" x2="26" y2="112"/>
+          <line class="b" x1="70" y1="72" x2="70" y2="112"/>
+          <circle class="h" cx="24" cy="58" r="6.5"/>
+          <path class="b" d="M31 62 H68"/>
+          <path class="g" d="M68 62 H98"/>
+          <circle class="eqgf" cx="100" cy="62" r="6"/>
+          <path class="b" d="M68 62 L86 62 L86 34"/>
+          <circle class="eqf" cx="86" cy="30" r="6"/>
+          <path class="ar" d="M104 78 Q106 58 92 48 M96 50 L91 47 L91 53"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Lying Leg Curl</div><div class="sets-reps">3<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>60 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Squeeze hard at the top, 2-second controlled negative</li>
+          <li>Hips stay pinned to the pad — don't let them lift</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 11 Calf Raise -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Standing calf raise on a step: heel drops below the platform, then rises onto the toes.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="38" y="94" width="46" height="18" rx="2"/>
+          <circle class="gh" cx="60" cy="34" r="6.5"/>
+          <path class="g" d="M60 41 V68 L60 94"/>
+          <path class="g" d="M52 104 L60 94"/>
+          <circle class="h" cx="60" cy="24" r="7"/>
+          <path class="b" d="M60 31 V60"/>
+          <path class="b" d="M60 60 V88"/>
+          <path class="b" d="M60 88 L62 94 H74"/>
+          <path class="ar" d="M92 76 L92 56 M88 60 L92 56 L96 60"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Standing Calf Raise</div><div class="sets-reps">4<span class="mult">×</span>15</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>45 s</span></div>
+        <ul class="ex-cues">
+          <li>Full stretch at the bottom, 1-second pause at the top</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 12 Hanging Knee Raise -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Hanging knee raise: figure hangs from a bar and draws the knees up toward the chest.">
+          <line class="eq" x1="24" y1="16" x2="96" y2="16"/>
+          <circle class="h" cx="60" cy="34" r="7"/>
+          <path class="b" d="M50 18 L54 32 L56 48"/>
+          <path class="b" d="M70 18 L66 32 L64 48"/>
+          <path class="b" d="M60 45 V74"/>
+          <path class="g" d="M60 74 L57 94 L57 114"/>
+          <path class="b" d="M60 74 L84 70 L92 52"/>
+          <path class="ar" d="M28 96 Q34 74 54 68 M50 66 L55 68 L51 72"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Hanging Knee Raise</div><div class="sets-reps">3<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>60 s</span></div>
+        <ul class="ex-cues">
+          <li>No swinging — control up, control down</li>
+          <li>Draw the belly button toward the spine as you lift</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ DAY 3 — PUSH ══════════════ -->
+  <section class="day" id="d3">
+    <div class="day-header">
+      <span class="day-num">DAY 03</span>
+      <h2 class="day-title">Push — Hypertrophy</h2>
+      <span class="day-day">Wed</span>
+    </div>
+    <p class="day-focus">Higher reps, tighter rest, more pump. Chest, shoulders, triceps. Feel the muscle work — mind-muscle connection matters more here than raw load.</p>
+    <div class="warmup"><span class="tag">Warm-Up</span>5 min row · shoulder dislocates 2×10 · light DB press 2×15 · band triceps pushdowns 2×20</div>
+
+    <!-- 13 Incline DB Press -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Incline dumbbell press on a 30 degree bench: dumbbells lowered to the chest then pressed up.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <path class="bn" d="M24 100 L74 66 L80 74 L30 108 Z"/>
+          <line class="b" x1="34" y1="102" x2="34" y2="112"/>
+          <line class="b" x1="74" y1="76" x2="74" y2="112"/>
+          <circle class="h" cx="36" cy="86" r="6.5"/>
+          <path class="b" d="M43 88 L70 72"/>
+          <path class="b" d="M70 72 L88 80 L90 110"/>
+          <path class="g" d="M52 82 L44 92 L46 76"/>
+          <g class="eqgf"><circle cx="42" cy="74" r="3.5"/><circle cx="50" cy="74" r="3.5"/><rect x="42" y="72.2" width="8" height="3.6"/></g>
+          <path class="b" d="M52 82 L50 62 L54 46"/>
+          <g class="eqf"><circle cx="49" cy="42" r="4"/><circle cx="59" cy="42" r="4"/><rect x="49" y="40" width="10" height="4"/></g>
+          <path class="ar" d="M74 58 L74 42 M70 46 L74 42 L78 46"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Incline DB Press <span class="alt">(30°)</span></div><div class="sets-reps">4<span class="mult">×</span>10</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Bench at 30° — steeper hits front delts more than upper chest</li>
+          <li>Dumbbells stop just above the chest; don't clang them at the top</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 14 Seated DB Shoulder Press -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Seated dumbbell shoulder press: dumbbells start at ear height and press overhead.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="44" y="82" width="34" height="6" rx="2"/>
+          <line class="b" x1="60" y1="88" x2="60" y2="112"/>
+          <circle class="h" cx="60" cy="30" r="7"/>
+          <path class="b" d="M60 37 V64"/>
+          <path class="b" d="M52 78 L44 92 L44 108"/>
+          <path class="b" d="M68 78 L76 92 L76 108"/>
+          <path class="b" d="M60 64 L52 78 M60 64 L68 78"/>
+          <path class="g" d="M50 44 L38 50 L40 36"/>
+          <path class="g" d="M70 44 L82 50 L80 36"/>
+          <g class="eqgf"><circle cx="36" cy="34" r="3.5"/><circle cx="44" cy="34" r="3.5"/><rect x="36" y="32.2" width="8" height="3.6"/></g>
+          <g class="eqgf"><circle cx="76" cy="34" r="3.5"/><circle cx="84" cy="34" r="3.5"/><rect x="76" y="32.2" width="8" height="3.6"/></g>
+          <path class="b" d="M50 44 L44 32 L46 18"/>
+          <path class="b" d="M70 44 L76 32 L74 18"/>
+          <g class="eqf"><circle cx="41" cy="14" r="4"/><circle cx="51" cy="14" r="4"/><rect x="41" y="12" width="10" height="4"/></g>
+          <g class="eqf"><circle cx="69" cy="14" r="4"/><circle cx="79" cy="14" r="4"/><rect x="69" y="12" width="10" height="4"/></g>
+          <path class="ar" d="M98 44 L98 24 M94 28 L98 24 L102 28"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Seated DB Shoulder Press</div><div class="sets-reps">3<span class="mult">×</span>10</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Back flat on the pad, press up and slightly in</li>
+          <li>Don't let the lower back arch off the bench</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 15 Cable Fly -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Cable chest fly: arms start wide and sweep together in front of the chest.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="4" y="20" width="12" height="62" rx="2"/>
+          <rect class="bn" x="104" y="20" width="12" height="62" rx="2"/>
+          <circle class="eqf" cx="16" cy="28" r="3.5"/>
+          <circle class="eqf" cx="104" cy="28" r="3.5"/>
+          <circle class="h" cx="60" cy="32" r="7"/>
+          <path class="b" d="M60 39 V68"/>
+          <path class="b" d="M60 68 L52 90 L50 110"/>
+          <path class="b" d="M60 68 L68 90 L70 110"/>
+          <path class="g" d="M50 46 L34 40 L22 34"/>
+          <path class="g" d="M70 46 L86 40 L98 34"/>
+          <path class="eqg" d="M16 28 L22 34 M104 28 L98 34"/>
+          <path class="b" d="M50 46 L44 58 L57 60"/>
+          <path class="b" d="M70 46 L76 58 L63 60"/>
+          <path class="eq" d="M16 28 L57 60 M104 28 L63 60"/>
+          <path class="ar" d="M34 76 L52 76 M48 72 L52 76 L48 80"/>
+          <path class="ar" d="M86 76 L68 76 M72 72 L68 76 L72 80"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Cable Chest Fly</div><div class="sets-reps">3<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>60 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Slight, fixed elbow bend — this is a hug, not a press</li>
+          <li>Squeeze the hands together in front of the chest and hold a beat</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 16 Lateral Raise -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Dumbbell lateral raise: arms lift from the sides out to shoulder height.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="h" cx="60" cy="26" r="7"/>
+          <path class="b" d="M60 33 V66"/>
+          <path class="b" d="M60 66 L52 88 L50 110"/>
+          <path class="b" d="M60 66 L68 88 L70 110"/>
+          <path class="g" d="M50 40 L46 56 L45 70"/>
+          <path class="g" d="M70 40 L74 56 L75 70"/>
+          <g class="eqgf"><circle cx="41" cy="72" r="3.5"/><circle cx="49" cy="72" r="3.5"/><rect x="41" y="70.2" width="8" height="3.6"/></g>
+          <g class="eqgf"><circle cx="71" cy="72" r="3.5"/><circle cx="79" cy="72" r="3.5"/><rect x="71" y="70.2" width="8" height="3.6"/></g>
+          <path class="b" d="M50 40 L36 38 L22 40"/>
+          <path class="b" d="M70 40 L84 38 L98 40"/>
+          <g class="eqf"><circle cx="17" cy="40" r="4"/><circle cx="27" cy="40" r="4"/><rect x="17" y="38" width="10" height="4"/></g>
+          <g class="eqf"><circle cx="93" cy="40" r="4"/><circle cx="103" cy="40" r="4"/><rect x="93" y="38" width="10" height="4"/></g>
+          <path class="ar" d="M30 62 Q22 54 22 48 M18 52 L22 47 L26 52"/>
+          <path class="ar" d="M90 62 Q98 54 98 48 M94 52 L98 47 L102 52"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">DB Lateral Raise</div><div class="sets-reps">4<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>45 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Lead with the elbows; stop at shoulder height</li>
+          <li>Light weight. Ego-lifting ruins this one</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 17 Triceps Pushdown -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Triceps rope pushdown: elbows pinned to the sides while the rope is pressed down to full extension.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="92" y="18" width="14" height="66" rx="2"/>
+          <circle class="eqf" cx="92" cy="24" r="3.5"/>
+          <circle class="h" cx="48" cy="28" r="7"/>
+          <path class="b" d="M48 35 V64"/>
+          <path class="b" d="M48 64 L42 88 L40 112"/>
+          <path class="b" d="M48 64 L56 88 L58 112"/>
+          <path class="g" d="M53 42 L57 58 L66 50"/>
+          <path class="eqg" d="M92 24 L66 50"/>
+          <path class="b" d="M53 42 L57 58 L61 74"/>
+          <path class="eq" d="M92 24 L61 74"/>
+          <path class="ar" d="M80 66 L80 86 M76 82 L80 86 L84 82"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Triceps Rope Pushdown</div><div class="sets-reps">3<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>45 s</span></div>
+        <ul class="ex-cues">
+          <li>Elbows glued to the sides — only the forearms move</li>
+          <li>Split the rope apart at the bottom</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 18 Overhead Triceps Extension -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Overhead triceps extension: dumbbell lowered behind the head then extended straight up.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="h" cx="52" cy="34" r="7"/>
+          <path class="b" d="M52 41 V68"/>
+          <path class="b" d="M52 68 L46 90 L44 112"/>
+          <path class="b" d="M52 68 L60 90 L62 112"/>
+          <path class="g" d="M56 46 L62 26 L46 32"/>
+          <g class="eqgf"><circle cx="40" cy="32" r="3.5"/><circle cx="40" cy="24" r="3.5"/><rect x="38.2" y="24" width="3.6" height="8"/></g>
+          <path class="b" d="M56 46 L62 26 L64 12"/>
+          <g class="eqf"><circle cx="70" cy="10" r="4"/><circle cx="70" cy="20" r="4"/><rect x="68" y="10" width="4" height="10"/></g>
+          <path class="ar" d="M32 44 Q34 22 56 14 M52 12 L57 15 L52 18"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Overhead Triceps Extension</div><div class="sets-reps">3<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>45 s</span></div>
+        <ul class="ex-cues">
+          <li>Elbows tucked in and pointed forward — don't let them flare</li>
+          <li>Deep stretch at the bottom, full lockout at the top</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ DAY 4 — PULL ══════════════ -->
+  <section class="day" id="d4">
+    <div class="day-header">
+      <span class="day-num">DAY 04</span>
+      <h2 class="day-title">Pull — Hypertrophy</h2>
+      <span class="day-day">Thu</span>
+    </div>
+    <p class="day-focus">Back, rear delts, biceps. A thick back is what actually makes a physique — and strong pulling posture undoes the desk hunch.</p>
+    <div class="warmup"><span class="tag">Warm-Up</span>5 min row · cat-cow 2×8 · scapular pull-ups 2×8 · band pull-aparts 2×20 · light deadlift setups 2×5</div>
+
+    <!-- 19 Trap Bar Deadlift -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Trap bar deadlift: figure stands inside a hex bar and drives from the floor to full lockout.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="gh" cx="60" cy="16" r="6.5"/>
+          <path class="g" d="M60 23 V54"/>
+          <path class="g" d="M60 54 L53 82 L52 108"/>
+          <path class="g" d="M60 54 L67 82 L68 108"/>
+          <path class="g" d="M50 30 L44 50 L42 68"/>
+          <path class="g" d="M70 30 L76 50 L78 68"/>
+          <line class="eqg" x1="30" y1="68" x2="90" y2="68"/>
+          <circle class="h" cx="60" cy="40" r="7"/>
+          <path class="b" d="M60 47 V68"/>
+          <path class="b" d="M60 68 L46 84 L48 108"/>
+          <path class="b" d="M60 68 L74 84 L72 108"/>
+          <path class="b" d="M51 52 L45 66 L42 82"/>
+          <path class="b" d="M69 52 L75 66 L78 82"/>
+          <line class="eq" x1="30" y1="86" x2="90" y2="86"/>
+          <circle class="eqf" cx="24" cy="88" r="10"/>
+          <circle class="eqf" cx="96" cy="88" r="10"/>
+          <path class="ar" d="M106 76 L106 54 M102 58 L106 54 L110 58"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Trap-Bar Deadlift</div><div class="sets-reps">4<span class="mult">×</span>6</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>3 min</span><span><strong>RPE</strong>7–8</span></div>
+        <ul class="ex-cues">
+          <li>Chest up, brace, push the floor away — don't yank the bar</li>
+          <li>The trap bar is far kinder to the lower back than conventional</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 20 Lat Pulldown -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Wide-grip lat pulldown: bar pulled from overhead down to the upper chest.">
+          <path class="eq" d="M60 6 V22"/>
+          <line class="eqg" x1="30" y1="22" x2="90" y2="22"/>
+          <path class="g" d="M50 50 L46 36 L38 22"/>
+          <path class="g" d="M70 50 L74 36 L82 22"/>
+          <circle class="h" cx="60" cy="40" r="7"/>
+          <path class="b" d="M60 47 V76"/>
+          <path class="b" d="M50 50 L40 62 L36 54"/>
+          <path class="b" d="M70 50 L80 62 L84 54"/>
+          <line class="eq" x1="30" y1="54" x2="90" y2="54"/>
+          <path class="eq" d="M60 22 V54"/>
+          <rect class="bn" x="42" y="86" width="40" height="6" rx="2"/>
+          <path class="b" d="M60 76 L52 88 L52 104"/>
+          <path class="b" d="M60 76 L68 88 L68 104"/>
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <path class="ar" d="M104 26 L104 50 M100 46 L104 50 L108 46"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Wide-Grip Lat Pulldown</div><div class="sets-reps">4<span class="mult">×</span>10</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Slight backward lean, pull the bar to the upper chest</li>
+          <li>Drive elbows down and back — feel the lats, not the arms</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 21 Seated Cable Row -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Seated cable row: handle pulled from arms-extended back to the lower ribs with an upright torso.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="6" y="38" width="14" height="52" rx="2"/>
+          <rect class="bn" x="46" y="86" width="44" height="6" rx="2"/>
+          <line class="b" x1="68" y1="92" x2="68" y2="112"/>
+          <circle class="eqf" cx="20" cy="72" r="3.5"/>
+          <circle class="h" cx="66" cy="42" r="7"/>
+          <path class="b" d="M66 49 V82"/>
+          <path class="b" d="M66 82 L44 82 L34 96"/>
+          <path class="g" d="M60 56 L48 66 L34 74"/>
+          <path class="eqg" d="M20 72 L34 74"/>
+          <path class="b" d="M60 56 L78 66 L58 74"/>
+          <path class="eq" d="M20 72 L58 74"/>
+          <path class="ar" d="M96 60 L96 42 M92 46 L96 42 L100 46" transform="rotate(-90 96 52)"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Seated Cable Row</div><div class="sets-reps">3<span class="mult">×</span>10</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Chest up, no torso rocking — pull to the lower ribs</li>
+          <li>Two-second squeeze at the back of every rep</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 22 DB Pullover -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Dumbbell pullover: lying across a bench, dumbbell arcs from behind the head to over the chest.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="36" y="72" width="54" height="6" rx="2"/>
+          <line class="b" x1="44" y1="78" x2="44" y2="112"/>
+          <line class="b" x1="82" y1="78" x2="82" y2="112"/>
+          <circle class="h" cx="40" cy="64" r="6.5"/>
+          <path class="b" d="M47 68 H76"/>
+          <path class="b" d="M76 68 L82 90 L80 112"/>
+          <path class="g" d="M54 66 L42 58 L30 54"/>
+          <g class="eqgf"><circle cx="24" cy="52" r="3.5"/><circle cx="24" cy="60" r="3.5"/><rect x="22.2" y="52" width="3.6" height="8"/></g>
+          <path class="b" d="M54 66 L54 52 L56 40"/>
+          <g class="eqf"><circle cx="51" cy="36" r="4"/><circle cx="61" cy="36" r="4"/><rect x="51" y="34" width="10" height="4"/></g>
+          <path class="ar" d="M26 40 Q34 22 56 24 M52 21 L57 24 L52 28"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">DB Pullover</div><div class="sets-reps">3<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>60 s</span><span><strong>RPE</strong>7</span></div>
+        <ul class="ex-cues">
+          <li>Lie across the bench with one dumbbell, stretch it overhead</li>
+          <li>Keep the ribs down — the stretch should be in the lats, not the lower back</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 23 DB Curl -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Dumbbell biceps curl: dumbbells curl from the sides up to shoulder height, palms up.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="h" cx="60" cy="26" r="7"/>
+          <path class="b" d="M60 33 V66"/>
+          <path class="b" d="M60 66 L52 88 L50 110"/>
+          <path class="b" d="M60 66 L68 88 L70 110"/>
+          <path class="g" d="M50 40 L46 56 L45 72"/>
+          <path class="g" d="M70 40 L74 56 L75 72"/>
+          <g class="eqgf"><circle cx="41" cy="74" r="3.5"/><circle cx="49" cy="74" r="3.5"/><rect x="41" y="72.2" width="8" height="3.6"/></g>
+          <g class="eqgf"><circle cx="71" cy="74" r="3.5"/><circle cx="79" cy="74" r="3.5"/><rect x="71" y="72.2" width="8" height="3.6"/></g>
+          <path class="b" d="M50 40 L47 58 L54 42"/>
+          <path class="b" d="M70 40 L73 58 L66 42"/>
+          <g class="eqf"><circle cx="49" cy="38" r="4"/><circle cx="59" cy="38" r="4"/><rect x="49" y="36" width="10" height="4"/></g>
+          <g class="eqf"><circle cx="61" cy="38" r="4"/><circle cx="71" cy="38" r="4"/><rect x="61" y="36" width="10" height="4"/></g>
+          <path class="ar" d="M28 74 Q26 54 40 46 M36 44 L41 46 L37 50"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">DB Biceps Curl</div><div class="sets-reps">3<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>45 s</span></div>
+        <ul class="ex-cues">
+          <li>Elbows pinned to the ribs, no swinging</li>
+          <li>Rotate the palms up as you curl</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 24 Hammer Curl -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Hammer curl: same curl path with a neutral, thumbs-up grip so the dumbbells stay vertical.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="h" cx="60" cy="26" r="7"/>
+          <path class="b" d="M60 33 V66"/>
+          <path class="b" d="M60 66 L52 88 L50 110"/>
+          <path class="b" d="M60 66 L68 88 L70 110"/>
+          <path class="g" d="M50 40 L46 56 L45 72"/>
+          <path class="g" d="M70 40 L74 56 L75 72"/>
+          <g class="eqgf"><circle cx="45" cy="70" r="3.5"/><circle cx="45" cy="78" r="3.5"/><rect x="43.2" y="70" width="3.6" height="8"/></g>
+          <g class="eqgf"><circle cx="75" cy="70" r="3.5"/><circle cx="75" cy="78" r="3.5"/><rect x="73.2" y="70" width="3.6" height="8"/></g>
+          <path class="b" d="M50 40 L47 58 L54 42"/>
+          <path class="b" d="M70 40 L73 58 L66 42"/>
+          <g class="eqf"><circle cx="54" cy="34" r="4"/><circle cx="54" cy="44" r="4"/><rect x="52" y="34" width="4" height="10"/></g>
+          <g class="eqf"><circle cx="66" cy="34" r="4"/><circle cx="66" cy="44" r="4"/><rect x="64" y="34" width="4" height="10"/></g>
+          <path class="ar" d="M28 74 Q26 54 40 46 M36 44 L41 46 L37 50"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Hammer Curl</div><div class="sets-reps">3<span class="mult">×</span>12</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>45 s</span></div>
+        <ul class="ex-cues">
+          <li>Neutral grip — dumbbells stay vertical the whole way</li>
+          <li>Targets the brachialis, the muscle that makes arms look thick</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ DAY 5 — LEGS + CORE ══════════════ -->
+  <section class="day" id="d5">
+    <div class="day-header">
+      <span class="day-num">DAY 05</span>
+      <h2 class="day-title">Legs + Core</h2>
+      <span class="day-day">Fri</span>
+    </div>
+    <p class="day-focus">Quad and glute focused, plus dedicated core work. End of the week — this one leaves you sore in a good way heading into the weekend.</p>
+    <div class="warmup"><span class="tag">Warm-Up</span>5 min bike · leg swings 10/leg · goblet squats 2×10 · glute bridges 2×15</div>
+
+    <!-- 25 Front Squat -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Front squat: bar racked on the front delts with elbows high, torso staying vertical through the descent.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <circle class="gh" cx="60" cy="18" r="6.5"/>
+          <path class="g" d="M60 25 V56"/>
+          <path class="g" d="M60 56 L52 82 L50 110"/>
+          <path class="g" d="M60 56 L68 82 L70 110"/>
+          <line class="eqg" x1="36" y1="32" x2="84" y2="32"/>
+          <circle class="h" cx="60" cy="36" r="7"/>
+          <path class="b" d="M60 43 V68"/>
+          <path class="b" d="M60 68 L42 84 L48 110"/>
+          <path class="b" d="M60 68 L78 84 L72 110"/>
+          <path class="b" d="M50 48 L42 42 L52 46"/>
+          <path class="b" d="M70 48 L78 42 L68 46"/>
+          <line class="eq" x1="32" y1="46" x2="88" y2="46"/>
+          <circle class="eqf" cx="30" cy="46" r="5"/>
+          <circle class="eqf" cx="90" cy="46" r="5"/>
+          <path class="ar" d="M104 34 L104 56 M100 52 L104 56 L108 52"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Front Squat <span class="alt">(or leg press)</span></div><div class="sets-reps">4<span class="mult">×</span>8</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>2–3 min</span><span><strong>RPE</strong>7–8</span></div>
+        <ul class="ex-cues">
+          <li>Elbows high, upper back tight, torso stays vertical</li>
+          <li>More quad-dominant than a back squat — you'll feel it in the thighs</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 26 Hip Thrust -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">A2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Barbell hip thrust: shoulders on a bench, hips driven from the floor up to full lockout.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="14" y="60" width="34" height="6" rx="2"/>
+          <line class="b" x1="22" y1="66" x2="22" y2="112"/>
+          <line class="b" x1="42" y1="66" x2="42" y2="112"/>
+          <circle class="h" cx="30" cy="50" r="6.5"/>
+          <path class="g" d="M40 58 L68 86"/>
+          <line class="eqg" x1="68" y1="78" x2="68" y2="94"/>
+          <path class="g" d="M68 86 L88 66"/>
+          <path class="b" d="M40 58 H72"/>
+          <path class="b" d="M72 58 L88 60 L88 108"/>
+          <line class="eq" x1="72" y1="48" x2="72" y2="66"/>
+          <path class="ar" d="M104 86 L104 62 M100 66 L104 62 L108 66"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Barbell Hip Thrust</div><div class="sets-reps">3<span class="mult">×</span>10</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Shoulders on the bench, drive through the heels</li>
+          <li>Full lockout, glutes squeezed, ribs down — don't arch the back</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 27 Bulgarian Split Squat -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Bulgarian split squat: rear foot elevated on a bench, front leg descends into a deep lunge.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="74" y="74" width="34" height="6" rx="2"/>
+          <line class="b" x1="82" y1="80" x2="82" y2="112"/>
+          <line class="b" x1="102" y1="80" x2="102" y2="112"/>
+          <circle class="h" cx="50" cy="26" r="7"/>
+          <path class="b" d="M50 33 V64"/>
+          <path class="b" d="M50 64 L50 88 L48 110"/>
+          <path class="b" d="M50 64 L66 92 L86 74"/>
+          <path class="b" d="M50 40 L43 56 L43 70"/>
+          <g class="eqf"><circle cx="38" cy="72" r="3.5"/><circle cx="38" cy="80" r="3.5"/><rect x="36.2" y="72" width="3.6" height="8"/></g>
+          <path class="b" d="M50 40 L57 56 L57 70"/>
+          <g class="eqf"><circle cx="62" cy="72" r="3.5"/><circle cx="62" cy="80" r="3.5"/><rect x="60.2" y="72" width="3.6" height="8"/></g>
+          <path class="ar" d="M22 56 L22 78 M18 74 L22 78 L26 74"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Bulgarian Split Squat</div><div class="sets-reps">3<span class="mult">×</span>10<span class="mult">/leg</span></div></div>
+        <div class="ex-meta"><span><strong>REST</strong>90 s</span><span><strong>RPE</strong>8</span></div>
+        <ul class="ex-cues">
+          <li>Front foot far enough forward that the knee doesn't shoot past the toes</li>
+          <li>Humbling exercise — start with bodyweight or light dumbbells</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 28 Leg Extension -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">B2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Leg extension machine: shins lift the roller pad from hanging down to fully straight.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="26" y="66" width="46" height="6" rx="2"/>
+          <rect class="bn" x="22" y="34" width="6" height="34" rx="2"/>
+          <line class="b" x1="40" y1="72" x2="40" y2="112"/>
+          <circle class="h" cx="34" cy="32" r="6.5"/>
+          <path class="b" d="M34 39 L36 62"/>
+          <path class="b" d="M36 62 L46 66 H72"/>
+          <path class="g" d="M72 66 L72 94"/>
+          <circle class="eqgf" cx="72" cy="98" r="6"/>
+          <path class="b" d="M72 66 L100 62"/>
+          <circle class="eqf" cx="102" cy="62" r="6"/>
+          <path class="ar" d="M84 100 Q96 92 96 78 M92 82 L96 77 L100 82"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Leg Extension</div><div class="sets-reps">3<span class="mult">×</span>15</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>60 s</span><span><strong>RPE</strong>8–9</span></div>
+        <ul class="ex-cues">
+          <li>Two-second squeeze at the top, slow negative</li>
+          <li>Chase the burn here — this is the one set you can take near failure</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 29 Woodchopper -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C1</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Cable woodchopper: handle drawn diagonally from a high pulley down across the body to the opposite hip.">
+          <line class="gr" x1="8" y1="112" x2="112" y2="112"/>
+          <rect class="bn" x="6" y="14" width="12" height="56" rx="2"/>
+          <circle class="eqf" cx="18" cy="20" r="3.5"/>
+          <circle class="h" cx="64" cy="34" r="7"/>
+          <path class="b" d="M64 41 V68"/>
+          <path class="b" d="M64 68 L54 90 L52 110"/>
+          <path class="b" d="M64 68 L76 90 L80 110"/>
+          <path class="g" d="M58 46 L46 36 L34 26"/>
+          <path class="eqg" d="M18 20 L34 26"/>
+          <path class="b" d="M58 46 L70 58 L88 72"/>
+          <path class="eq" d="M18 20 L88 72"/>
+          <path class="ar" d="M44 62 Q58 78 78 88 M73 88 L79 89 L76 84"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Cable Woodchopper</div><div class="sets-reps">3<span class="mult">×</span>12<span class="mult">/side</span></div></div>
+        <div class="ex-meta"><span><strong>REST</strong>45 s</span></div>
+        <ul class="ex-cues">
+          <li>Rotate through the obliques — the arms just hold the handle</li>
+          <li>Hips stay square and stable; the torso does the turning</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 30 Ab Wheel -->
+    <div class="exercise">
+      <figure class="ex-fig"><span class="ex-num">C2</span>
+        <svg class="fig" viewBox="0 0 120 120" role="img" aria-label="Ab wheel rollout from the knees: body extends forward with the spine held straight.">
+          <line class="gr" x1="8" y1="110" x2="112" y2="110"/>
+          <circle class="gh" cx="50" cy="70" r="6"/>
+          <path class="g" d="M32 106 L36 88 L46 78"/>
+          <path class="g" d="M46 78 L56 92"/>
+          <circle class="eqgf" cx="60" cy="98" r="7"/>
+          <circle class="h" cx="70" cy="80" r="6.5"/>
+          <path class="b" d="M32 106 L40 92 L64 86"/>
+          <path class="b" d="M64 86 L82 96"/>
+          <circle class="eqf" cx="90" cy="100" r="8"/>
+          <path class="ar" d="M50 62 L84 74 M79 71 L85 75 L79 78"/>
+        </svg>
+      </figure>
+      <div class="ex-body">
+        <div class="ex-head"><div class="ex-name">Ab Wheel Rollout <span class="alt">(from knees)</span></div><div class="sets-reps">3<span class="mult">×</span>10</div></div>
+        <div class="ex-meta"><span><strong>REST</strong>60 s</span></div>
+        <ul class="ex-cues">
+          <li>Ribs pulled down, no lower-back sag — imagine a rod from hip to shoulder</li>
+          <li>Only roll as far out as you can control back</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ WEEKEND ══════ -->
+  <section class="weekend" id="weekend">
+    <div class="tag">Sat + Sun · Active Recovery</div>
+    <h3>Walk. Just walk.</h3>
+    <p>20–40 minutes of brisk walking or easy cardio on both weekend days. Use the talk test: you can speak in full sentences, but the pace still feels purposeful. Easy movement supports the goal without digging into recovery for the next training week.</p>
+  </section>
+
+  <section class="day" id="women">
+    <div class="day-header">
+      <span class="day-num">ALT TRACK</span>
+      <h2 class="day-title">Women-focused emphasis</h2>
+      <span class="day-day">Same five days</span>
+    </div>
+    <p class="day-focus">The main program works for women as written. This optional track keeps the same schedule and exercise diagrams, but shifts a little more weekly work toward glutes and legs. Pick one track and progress it for at least six weeks.</p>
+    <div class="track-note"><strong>No “women-only” exercises:</strong> strength training principles are the same. Start with a load that leaves about 2–3 good reps in reserve, use the listed rest, and add reps or weight only when form stays clean.</div>
+
+    <div class="women-grid">
+      <article class="focus-card">
+        <div class="day-code">Monday · Day 01</div>
+        <h3>Upper strength</h3>
+        <p>Follow Day 01 as written. If pull-ups are not there yet, use the lat pulldown and progress the load.</p>
+      </article>
+      <article class="focus-card">
+        <div class="day-code">Tuesday · Day 02</div>
+        <h3>Lower + glutes</h3>
+        <p>Follow Day 02, then add <strong>cable or band abductions · 2 × 15–20</strong>. Keep these controlled, not heavy.</p>
+      </article>
+      <article class="focus-card">
+        <div class="day-code">Wednesday · Day 03</div>
+        <h3>Push volume</h3>
+        <p>Follow Day 03. Use 2 sets—not 4—of lateral raises if shoulder recovery limits Thursday’s pulling.</p>
+      </article>
+      <article class="focus-card">
+        <div class="day-code">Thursday · Day 04</div>
+        <h3>Pull + posture</h3>
+        <p>Follow Day 04 and add <strong>face pulls · 2 × 15</strong>. Keep ribs stacked and finish each pull with the shoulder blades.</p>
+      </article>
+      <article class="focus-card">
+        <div class="day-code">Friday · Day 05</div>
+        <h3>Glute-led legs</h3>
+        <p>Start with <strong>hip thrust 4 × 8</strong>, then front squat 3 × 8, split squat 3 × 10/leg, leg extension 2 × 15, and ab wheel 3 × 10.</p>
+      </article>
+      <article class="focus-card">
+        <div class="day-code">Cycle notes</div>
+        <h3>Adjust, don’t abandon</h3>
+        <p>Energy and performance can vary across the menstrual cycle. On a rough day, keep the habit and reduce load or sets by 10–20%; resume normally when ready.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ══════ FOOD ══════ -->
+  <section class="day" id="food">
+    <div class="day-header">
+      <span class="day-num">FUEL</span>
+      <h2 class="day-title">Food Guide</h2>
+      <span class="day-day">Every day</span>
+    </div>
+    <p class="day-focus">You can't out-train the kitchen. Protein at every meal, cut the oil and the liquid calories, keep the swallow portions honest. None of this means giving up Nigerian food — it means cooking it a little leaner.</p>
+
+    <p class="food-intro">Aim for a palm-sized protein portion at every meal. Protein helps with fullness and muscle retention while losing weight. Fill roughly half the plate with vegetables, keep the carbs — rice, swallow, plantain — to about a quarter, and adjust portions from the weekly trend rather than chasing perfection.</p>
+
+    <div class="repeat-plan" aria-labelledby="repeat-title">
+      <div class="repeat-head">
+        <h3 id="repeat-title">The same menu. Every day.</h3>
+        <p>Built for low decision fatigue. Quantities are a starting point; scale the rice or oats up on hard training days and down if progress stalls for 2–3 weeks.</p>
+      </div>
+      <div class="routine">
+        <div class="routine-time">Breakfast</div>
+        <div><h4>Protein oats</h4><p>½–1 cup oats, 1 scoop protein powder, 1 cup milk, 1 banana, cinnamon.</p></div>
+        <div class="routine-protein">≈ 35–45 g</div>
+      </div>
+      <div class="routine">
+        <div class="routine-time">Snack 01</div>
+        <div><h4>Yogurt + fruit</h4><p>1 generous bowl plain Greek yogurt, berries or apple, small handful of groundnuts.</p></div>
+        <div class="routine-protein">≈ 25–30 g</div>
+      </div>
+      <div class="routine">
+        <div class="routine-time">Lunch</div>
+        <div><h4>Chicken rice bowl</h4><p>2 palms grilled chicken, 1 fist rice, 2 fists vegetables, pepper sauce; go light on oil.</p></div>
+        <div class="routine-protein">≈ 45–55 g</div>
+      </div>
+      <div class="routine">
+        <div class="routine-time">Snack 02</div>
+        <div><h4>Eggs + crunch</h4><p>2 boiled eggs with carrots or cucumber. Add fruit if training is still ahead.</p></div>
+        <div class="routine-protein">≈ 12–14 g</div>
+      </div>
+      <div class="routine">
+        <div class="routine-time">Dinner</div>
+        <div><h4>Fish, beans + greens</h4><p>2 palms grilled fish, 1 fist beans or boiled plantain, 2 fists efo/okra or mixed vegetables.</p></div>
+        <div class="routine-protein">≈ 40–50 g</div>
+      </div>
+      <div class="prep-strip"><strong>Sunday prep · 60–75 min:</strong> grill chicken and fish, cook rice and beans, boil 10 eggs, wash/chop vegetables, and portion five grab-and-go yogurt servings. Refrigerate safely and freeze later-week portions.</div>
+    </div>
+
+    <div class="food-block">
+      <div class="sub">Smart Swaps · Nigerian Kitchen</div>
+      <h3>Keep the food, lose the belly</h3>
+      <div style="margin-top:14px;">
+        <div class="swap"><span class="from">Fried plantain (dodo)</span><span class="arrow">→</span><span class="to">Boiled or grilled plantain / boli</span></div>
+        <div class="swap"><span class="from">Big mound of white rice</span><span class="arrow">→</span><span class="to">Ofada or brown rice, smaller portion, more protein</span></div>
+        <div class="swap"><span class="from">Stew swimming in palm oil</span><span class="arrow">→</span><span class="to">Same stew, half the oil</span></div>
+        <div class="swap"><span class="from">Large eba / fufu / pounded yam</span><span class="arrow">→</span><span class="to">Half the swallow, double the veg &amp; protein</span></div>
+        <div class="swap"><span class="from">Malt, soft drinks, beer</span><span class="arrow">→</span><span class="to">Water, unsweetened zobo, zero-sugar</span></div>
+        <div class="swap"><span class="from">Meat pie, puff puff, small chops</span><span class="arrow">→</span><span class="to">Moi moi, boiled eggs, roasted groundnuts</span></div>
+        <div class="swap"><span class="from">Deep-fried or oily suya</span><span class="arrow">→</span><span class="to">Grilled or peppered chicken &amp; fish</span></div>
+      </div>
+    </div>
+
+    <div class="food-block">
+      <div class="sub">Grab &amp; Go · 5-Minute Protein</div>
+      <h3>Easy meals, barely any cooking</h3>
+      <div class="meal-grid" style="margin-top:14px;">
+        <div class="meal"><div class="mmeta"><span>~30g protein</span></div><div class="mname">3–4 Boiled Eggs</div><div class="mdesc">Batch-boil a dozen at the start of the week. Add pepper sauce, eat cold or warm.</div></div>
+        <div class="meal"><div class="mmeta"><span>~25g protein</span></div><div class="mname">Greek Yogurt Bowl</div><div class="mdesc">Plain Greek yogurt, berries, a drizzle of honey, a spoon of granola or groundnuts.</div></div>
+        <div class="meal"><div class="mmeta"><span>~30g protein</span></div><div class="mname">Tinned Titus / Tuna</div><div class="mdesc">Mackerel or tuna straight from the tin over salad or wholemeal toast with onion &amp; pepper.</div></div>
+        <div class="meal"><div class="mmeta"><span>~40g protein</span></div><div class="mname">Batch Grilled Chicken</div><div class="mdesc">Season a tray of breast or thigh, bake once, eat all week over rice, salad, or in a wrap.</div></div>
+        <div class="meal"><div class="mmeta"><span>~25g protein</span></div><div class="mname">Oats + Milk + PB</div><div class="mdesc">Oats, milk, banana, a spoon of peanut butter. Add a scoop of protein powder to push it higher.</div></div>
+        <div class="meal"><div class="mmeta"><span>~35g protein</span></div><div class="mname">Protein Shake + Fruit</div><div class="mdesc">The fastest breakfast there is. One scoop, milk or water, a banana. Done in 60 seconds.</div></div>
+      </div>
+    </div>
+
+    <div class="food-block">
+      <div class="sub">Naija Plate · Cut-Friendly</div>
+      <h3>Nigerian meals that work for a cut</h3>
+      <div class="meal-grid" style="margin-top:14px;">
+        <div class="meal star"><div class="mmeta"><span>Top pick</span><span>★</span></div><div class="mname">Pepper Soup</div><div class="mdesc">Catfish, goat, or chicken. High protein, low carb, barely any oil — the ideal cut meal.</div></div>
+        <div class="meal star"><div class="mmeta"><span>Top pick</span><span>★</span></div><div class="mname">Moi Moi</div><div class="mdesc">Steamed bean pudding — genuinely high protein and filling. Great as a side or a meal with egg.</div></div>
+        <div class="meal"><div class="mmeta"><span>Lean &amp; fast</span></div><div class="mname">Grilled Fish / Chicken</div><div class="mdesc">Grilled tilapia, croaker, or peppered chicken with a side of vegetables or a small rice.</div></div>
+        <div class="meal"><div class="mmeta"><span>Go easy on oil</span></div><div class="mname">Efo Riro + Protein</div><div class="mdesc">Load the vegetables, cut the palm oil in half, pile in fish, ponmo, or lean meat.</div></div>
+        <div class="meal"><div class="mmeta"><span>Half the oil</span></div><div class="mname">Ewa (Beans)</div><div class="mdesc">Stewed beans or porridge is high in fibre and protein. Serve with boiled plantain, not fried.</div></div>
+        <div class="meal"><div class="mmeta"><span>Portion the swallow</span></div><div class="mname">Okra / Ogbono Soup</div><div class="mdesc">Vegetable-heavy soups with plenty of fish. Keep the swallow to a fist-sized portion.</div></div>
+        <div class="meal"><div class="mmeta"><span>Smart carb swap</span></div><div class="mname">Ofada + Ayamase</div><div class="mdesc">Unpolished ofada rice digests slower. Ask for less oil in the ayamase (designer stew).</div></div>
+        <div class="meal"><div class="mmeta"><span>Treat, not staple</span></div><div class="mname">Nkwobi / Isi Ewu</div><div class="mdesc">Delicious but fatty. Keep these to a once-in-a-while thing, not a weekly plate.</div></div>
+      </div>
+    </div>
+
+    <div class="warmup" style="margin-top:28px;">
+      <span class="tag">One rule</span>If you do nothing else: protein at every meal, halve the cooking oil, and cut the beer. Those three moves shrink the belly faster than any single workout.
+    </div>
+  </section>
+
+  <!-- ══════ TRACKER ══════ -->
+  <section class="day" id="track">
+    <div class="day-header">
+      <span class="day-num">DATA</span>
+      <h2 class="day-title">Weight Tracker</h2>
+      <span class="day-day">Weekly</span>
+    </div>
+    <p class="day-focus">Weigh in once a week — same morning, before breakfast, after the bathroom. Don't chase the daily number; it lies. Track the weekly trend and your waist, and let the line do the talking. Entries save on this device.</p>
+
+    <div class="tracker-top">
+      <div class="tstat"><div class="v">6'4"</div><div class="k">Height</div></div>
+      <div class="tstat"><div class="v" id="s-start">200<small>lb</small></div><div class="k">Start</div></div>
+      <div class="tstat hl"><div class="v" id="s-current">200<small>lb</small></div><div class="k">Latest</div></div>
+      <div class="tstat"><div class="v" id="s-lost">0<small>lb</small></div><div class="k">Change</div></div>
+      <div class="tstat"><div class="v" id="s-target">184<small>lb</small></div><div class="k">16-wk goal</div></div>
+    </div>
+
+    <div class="chart-wrap">
+      <svg id="chart" viewBox="0 0 600 300" role="img" aria-label="Line chart of projected versus actual weekly weight across the 16-week program."></svg>
+    </div>
+    <div class="chart-legend">
+      <span><i style="border-top-color:var(--accent-soft); border-top-style:dashed;"></i> Projected</span>
+      <span><i style="border-top-color:var(--ink); border-top-style:solid;"></i> Your actual</span>
+      <span><i style="border-top-color:rgba(62,91,46,0.55); border-top-style:solid;"></i> Goal zone</span>
+    </div>
+
+    <div class="rate-row">
+      <span class="lbl">Start weight</span>
+      <input id="startInput" class="num-input" type="number" inputmode="decimal" value="200">
+      <span class="lbl" style="margin-left:10px;">Pace / week</span>
+      <button class="chip" data-rate="0.75">0.75 lb</button>
+      <button class="chip active" data-rate="1">1 lb</button>
+      <button class="chip" data-rate="1.25">1.25 lb</button>
+    </div>
+
+    <div class="logger">
+      <div class="field"><label for="wkIn">Week</label><input id="wkIn" type="number" min="1" max="16" value="1"></div>
+      <div class="field"><label for="wtIn">Weight (lb)</label><input id="wtIn" type="number" inputmode="decimal" placeholder="198.5"></div>
+      <div class="field"><label for="wsIn">Waist (in)</label><input id="wsIn" type="number" inputmode="decimal" placeholder="opt."></div>
+      <button class="btn" id="logBtn">Log</button>
+    </div>
+
+    <div class="log-list" id="logList"></div>
+  </section>
+
+  <!-- ══════ NOTES ══════ -->
+  <section class="notes" id="notes">
+    <div class="eyebrow"><span>Section II</span><span>Program Rules</span></div>
+    <h2>Read this. It matters more than the sets.</h2>
+
+    <div class="note">
+      <h4>Why 16 Weeks</h4>
+      <p>At 200 lb and 6'4" you're not overweight — you carry it in the middle. Getting the belly to visibly flatten and the top abs to show means dropping roughly 15 lb of fat, and honest fat loss caps at about 1 lb per week. That's ~16 weeks. You'll notice the waist by week 4–6, a real cut by week 10–12, and top abs around week 16. A full, lower-ab six-pack usually needs another 4–8 weeks past that — so if you want the complete set, plan for 20–24 weeks and keep going.</p>
+    </div>
+    <div class="note">
+      <h4>Progressive Overload</h4>
+      <p>Each week, add either weight or reps on your main lifts (the A1/A2 of each day). If you hit all prescribed reps with clean form, add 2.5 kg next session for upper body, 5 kg for lower. If you miss reps two weeks running, deload 10% and rebuild.</p>
+    </div>
+    <div class="note">
+      <h4>Nutrition Beats Training</h4>
+      <p>The gym builds muscle. The kitchen strips fat. Target roughly a 500 kcal deficit, 1 g protein per lb bodyweight, and cut liquid calories — beer is the single biggest lever for a beer belly specifically. Track for two weeks minimum to know where you actually stand.</p>
+    </div>
+    <div class="note">
+      <h4>Sleep is a Training Variable</h4>
+      <p>Under 6 hours and recovery, hunger, and cortisol all move against you — visceral belly fat especially. Treat 7–8 hours as a non-negotiable input, same as protein.</p>
+    </div>
+    <div class="note">
+      <h4>Cardio Placement</h4>
+      <p>Steady-state cardio goes on non-lifting days or after lifting, never before. If you want more, swap one Saturday walk for intervals: 10 rounds of 30 s hard / 90 s easy on a bike or rower.</p>
+    </div>
+    <div class="note">
+      <h4>What to Track</h4>
+      <p>Bodyweight (weekly average, not daily). Waist measurement at the navel (bi-weekly). Working weights on bench, squat, deadlift, and overhead press. That's it — don't over-instrument this.</p>
+    </div>
+    <div class="note">
+      <h4>When to Deload</h4>
+      <p>Every 6–8 weeks, or whenever numbers stall two weeks running: drop working weights 40% for one week and keep the same movements. You'll come back stronger.</p>
+    </div>
+
+    <div class="glossary">
+      <strong>RPE</strong> — Rate of Perceived Exertion. RPE 7 = about 3 reps left in the tank. RPE 8 = 2 left. RPE 9 = 1 left. Almost never train to true failure on compounds.<br>
+      <strong>AMRAP</strong> — As Many Reps As Possible, with clean form.<br>
+      <strong>TEMPO 2·0·1</strong> — 2 s down, 0 s pause, 1 s up.<br>
+      <strong>A1 / A2</strong> — Pair as supersets when short on time, or run straight through with full rest.
+    </div>
+  </section>
+
+  <footer>End of Program · Sign the log · Do the work</footer>
+
+</div>
+
+<dialog class="form-dialog" id="formDialog" aria-labelledby="formDialogTitle">
+  <div class="dialog-bar">
+    <strong id="formDialogTitle">Exercise form</strong>
+    <button class="dialog-close" type="button" aria-label="Close enlarged exercise diagram">Close ×</button>
+  </div>
+  <div class="dialog-figure" id="dialogFigure"></div>
+  <p class="dialog-tip">Faded figure = start · solid figure = finish · orange arrow = direction. Use the written cues beside each diagram and stop if a movement causes sharp pain.</p>
+</dialog>
+
+<script>
+(function(){
+  const KEY = 'cutbuild:tracker';
+  const W = 16; // program length in weeks
+  const store = {
+    async get(k){
+      try { if(window.storage){ const r = await window.storage.get(k); return r ? r.value : null; } }
+      catch(e){}
+      try { return localStorage.getItem(k); } catch(e) { return null; }
+    },
+    async set(k,v){
+      try { if(window.storage){ await window.storage.set(k,v); return; } }
+      catch(e){}
+      try { localStorage.setItem(k,v); } catch(e) {}
+    }
+  };
+
+  let state = { start: 200, rate: 1, log: [] }; // log: [{week, weight, waist}]
+  const $ = id => document.getElementById(id);
+
+  const projAt = wk => state.start - state.rate * wk;
+  const sortedLog = () => state.log.slice().sort((a,b)=>a.week-b.week);
+  const fmt = n => (Math.round(n*10)/10).toString();
+  const save = () => store.set(KEY, JSON.stringify(state));
+
+  function render(){
+    const target = projAt(W);
+    const sl = sortedLog();
+    const latest = sl.length ? sl[sl.length-1] : { week:0, weight:state.start };
+    const cur = latest.weight;
+    const lost = state.start - cur;
+
+    $('s-start').innerHTML   = fmt(state.start) + '<small>lb</small>';
+    $('s-current').innerHTML = fmt(cur) + '<small>lb</small>';
+    $('s-lost').innerHTML    = (lost > 0.05 ? '−' + fmt(lost) : lost < -0.05 ? '+' + fmt(-lost) : '0') + '<small>lb</small>';
+    $('s-target').innerHTML  = fmt(target) + '<small>lb</small>';
+
+    drawChart(target);
+    drawLog(sl);
+  }
+
+  function drawChart(target){
+    const svg = $('chart');
+    const w=600, h=300, ml=44, mr=16, mt=16, mb=28;
+    const pw = w-ml-mr, ph = h-mt-mb;
+    const projMin = target;
+    let yMax = state.start + 3, yMin = projMin - 3;
+    state.log.forEach(e => { if(e.weight+2 > yMax) yMax = e.weight+2; if(e.weight-2 < yMin) yMin = e.weight-2; });
+    yMax = Math.ceil(yMax/2)*2; yMin = Math.floor(yMin/2)*2;
+    if(yMax - yMin < 8) yMax = yMin + 8;
+
+    const xFor = wk => ml + (wk/W)*pw;
+    const yFor = wt => mt + ((yMax-wt)/(yMax-yMin))*ph;
+
+    let s = '';
+    // goal band
+    const gzTop = yFor(projMin+1.5), gzBot = yFor(projMin-1.5);
+    s += `<rect x="${ml}" y="${gzTop.toFixed(1)}" width="${pw}" height="${Math.max(0,gzBot-gzTop).toFixed(1)}" fill="rgba(62,91,46,0.14)"/>`;
+    // horizontal gridlines + weight labels
+    for(let i=0;i<=5;i++){
+      const wt = yMin + (yMax-yMin)*i/5;
+      const y = yFor(wt);
+      s += `<line x1="${ml}" y1="${y.toFixed(1)}" x2="${w-mr}" y2="${y.toFixed(1)}" stroke="rgba(20,24,31,0.12)" stroke-width="1"/>`;
+      s += `<text x="${ml-6}" y="${(y+3).toFixed(1)}" text-anchor="end" font-family="JetBrains Mono, monospace" font-size="9" fill="#6E6558">${Math.round(wt)}</text>`;
+    }
+    // vertical week markers
+    [0,4,8,12,16].forEach(wk => {
+      const x = xFor(wk);
+      s += `<line x1="${x.toFixed(1)}" y1="${mt}" x2="${x.toFixed(1)}" y2="${h-mb}" stroke="rgba(20,24,31,0.07)" stroke-width="1"/>`;
+      s += `<text x="${x.toFixed(1)}" y="${h-mb+16}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="9" fill="#6E6558">wk ${wk}</text>`;
+    });
+    // projected line
+    s += `<line x1="${xFor(0).toFixed(1)}" y1="${yFor(state.start).toFixed(1)}" x2="${xFor(W).toFixed(1)}" y2="${yFor(projMin).toFixed(1)}" stroke="#C97A5D" stroke-width="2.5" stroke-dasharray="6 5" stroke-linecap="round"/>`;
+    s += `<circle cx="${xFor(W).toFixed(1)}" cy="${yFor(projMin).toFixed(1)}" r="4" fill="#C97A5D"/>`;
+    // actual line (anchored at week 0 = start)
+    const pts = [{week:0, weight:state.start}].concat(sortedLog());
+    let d = '';
+    pts.forEach((p,i) => { d += (i===0?'M':'L') + xFor(p.week).toFixed(1) + ' ' + yFor(p.weight).toFixed(1) + ' '; });
+    s += `<path d="${d}" fill="none" stroke="#14181F" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+    pts.forEach(p => { s += `<circle cx="${xFor(p.week).toFixed(1)}" cy="${yFor(p.weight).toFixed(1)}" r="4.5" fill="#14181F"/>`; });
+
+    svg.innerHTML = s;
+  }
+
+  function drawLog(sl){
+    const box = $('logList');
+    if(!sl.length){ box.innerHTML = '<div class="log-empty">No weigh-ins logged yet. Add your first one above.</div>'; return; }
+    box.innerHTML = sl.map(e =>
+      `<div class="log-row"><span class="wk">WK ${e.week}</span><span>${fmt(e.weight)} lb</span><span>${e.waist ? e.waist + '&Prime; waist' : '—'}</span><button class="del" data-week="${e.week}" aria-label="Delete week ${e.week}">×</button></div>`
+    ).join('');
+    box.querySelectorAll('.del').forEach(b => b.addEventListener('click', () => {
+      const wk = +b.dataset.week;
+      state.log = state.log.filter(x => x.week !== wk);
+      save(); render();
+    }));
+  }
+
+  // ─── events ───
+  document.querySelectorAll('.chip[data-rate]').forEach(c => c.addEventListener('click', () => {
+    document.querySelectorAll('.chip[data-rate]').forEach(x => x.classList.remove('active'));
+    c.classList.add('active');
+    state.rate = parseFloat(c.dataset.rate);
+    save(); render();
+  }));
+
+  $('startInput').addEventListener('change', () => {
+    const v = parseFloat($('startInput').value);
+    if(v > 0){ state.start = v; save(); render(); }
+  });
+
+  $('logBtn').addEventListener('click', () => {
+    const wk = parseInt($('wkIn').value, 10);
+    const wt = parseFloat($('wtIn').value);
+    const ws = parseFloat($('wsIn').value);
+    if(!(wk >= 1 && wk <= 16) || !(wt > 0)) return;
+    state.log = state.log.filter(x => x.week !== wk);
+    state.log.push({ week: wk, weight: wt, waist: (ws > 0 ? ws : null) });
+    $('wtIn').value = ''; $('wsIn').value = '';
+    if(wk < 16) $('wkIn').value = wk + 1;
+    save(); render();
+  });
+
+  // Enlarge any exercise diagram without loading external image assets.
+  const formDialog = $('formDialog');
+  const dialogFigure = $('dialogFigure');
+  const dialogTitle = $('formDialogTitle');
+  document.querySelectorAll('.exercise').forEach(exercise => {
+    const figure = exercise.querySelector('.ex-fig');
+    const svg = exercise.querySelector('.fig');
+    const name = exercise.querySelector('.ex-name');
+    if(!figure || !svg || !name) return;
+    svg.setAttribute('tabindex', '0');
+    svg.setAttribute('aria-label', (svg.getAttribute('aria-label') || name.textContent.trim()) + ' Select to enlarge.');
+    const openDiagram = () => {
+      dialogTitle.textContent = name.textContent.trim();
+      dialogFigure.innerHTML = '';
+      dialogFigure.appendChild(svg.cloneNode(true));
+      formDialog.showModal();
+    };
+    figure.addEventListener('click', openDiagram);
+    svg.addEventListener('keydown', event => {
+      if(event.key === 'Enter' || event.key === ' '){ event.preventDefault(); openDiagram(); }
+    });
+  });
+  formDialog.querySelector('.dialog-close').addEventListener('click', () => formDialog.close());
+  formDialog.addEventListener('click', event => { if(event.target === formDialog) formDialog.close(); });
+
+  // ─── init ───
+  (async function(){
+    const raw = await store.get(KEY);
+    if(raw){ try{ const p = JSON.parse(raw); state = Object.assign(state, p); }catch(e){} }
+    $('startInput').value = state.start;
+    document.querySelectorAll('.chip[data-rate]').forEach(x => {
+      x.classList.toggle('active', parseFloat(x.dataset.rate) === state.rate);
+    });
+    render();
+  })();
+})();
+</script>
+</body>
+</html>
